@@ -5,6 +5,7 @@ import grails.gorm.transactions.Transactional
 class ProductService {
 
     WareHouseService wareHouseService
+    ShopService shopService
 
     Product createProduct(def requestBody) {
         def existingProduct = Product.findByBarCode(requestBody.productBarCode)
@@ -46,10 +47,18 @@ class ProductService {
         return true
     }
 
-    Boolean removeExpiredProducts() {
+    Boolean returnExpiredProducts() {
         def currentDate = new Date()
-        def expiredProducts = Product.findAllByDateOfExpirationLessThan(currentDate)
-
+        def shopInventories = ShopInventory.findAll()
+        shopInventories.each { shopInventory ->
+            if (shopInventory.product.expirationDate > currentDate) {
+                shopService.returnToWareHouse(shopInventory.product, shopInventory.shop,shopInventory.count)
+                println "Expired products removed successfully"
+                return true
+            }
+            println "Not expired products"
+            return false
+        }
         expiredProducts.each { product ->
             product.delete(flush: true)
             println "Removed expired product: ${product.name} with barcode: ${product.barCode}"

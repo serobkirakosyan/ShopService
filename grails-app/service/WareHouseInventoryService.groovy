@@ -31,4 +31,19 @@ class WareHouseInventoryService {
             return false
         }
     }
+    List<WareHouseInventory> getWareHouseInventory() {
+        def wareHouseInventories = WareHouseInventory.findAll()
+
+        def wareHouseInventoryList = []
+
+        wareHouseInventories.each { wareHouseInventory ->
+            def wareHouseInventoryMap = [
+                    productBarCode  : wareHouseInventory.product.barCode,
+                    wareHouseBarCode: wareHouseInventory.wareHouse.barCode,
+                    count           : wareHouseInventory.count
+            ]
+            wareHouseInventoryList.add(wareHouseInventoryMap)
+        }
+        return wareHouseInventoryList
+    }
 }

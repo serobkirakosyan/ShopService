@@ -54,8 +54,24 @@ class ShopService {
             return false
         }
         wareHouseInventoryService.addProduct(product, wareHouse, requestBody.count)
-        println "Product returned successfully"
-        return true
+
+    }
+    Boolean returnToWareHouse(Product product, Shop shop, int count) {
+
+        WareHouse wareHouse = product.wareHouse
+        if (!product) {
+            println "Product can't be null"
+            return false
+        }
+        if (!shop) {
+            println "Shop can't be null"
+            return false
+        }
+        if (!shopInventoryService.removeProduct(product, shop, count)) {
+            return false
+        }
+        wareHouseInventoryService.addProduct(product, wareHouse, count)
+
     }
 
     List<Shop> getShops() {

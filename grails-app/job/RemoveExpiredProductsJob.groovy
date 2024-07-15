@@ -6,7 +6,7 @@ class RemoveExpiredProductsJob {
     ProductService productService
 
     def execute() {
-        productService.removeExpiredProducts()
+        productService.returnExpiredProducts()
         println "Expired products removed at ${new Date()}"
     }
 }

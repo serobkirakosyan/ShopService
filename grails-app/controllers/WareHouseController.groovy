@@ -5,6 +5,7 @@ import grails.gorm.transactions.Transactional
 class WareHouseController {
 
     WareHouseService wareHouseService
+    WareHouseInventoryService wareHouseInventoryService
 
     def createWareHouse() {
         def requestBody = request.JSON
@@ -57,6 +58,6 @@ class WareHouseController {
 
     def getWareHouseInventory() {
 
-        render wareHouseService.getWareHouseInventory() as JSON
+        render wareHouseInventoryService.getWareHouseInventory() as JSON
     }
 }
