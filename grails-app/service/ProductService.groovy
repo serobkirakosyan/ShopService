@@ -47,22 +47,13 @@ class ProductService {
         return true
     }
 
-    Boolean returnExpiredProducts() {
+    def returnExpiredProducts() {
         def currentDate = new Date()
         def shopInventories = ShopInventory.findAll()
         shopInventories.each { shopInventory ->
-            if (shopInventory.product.expirationDate > currentDate) {
-                shopService.returnToWareHouse(shopInventory.product, shopInventory.shop,shopInventory.count)
-                println "Expired products removed successfully"
-                return true
+            if (shopInventory.product.expirationDate < currentDate) {
+                shopService.returnToWareHouse(shopInventory.product, shopInventory.shop, shopInventory.count)
             }
-            println "Not expired products"
-            return false
-        }
-        expiredProducts.each { product ->
-            product.delete(flush: true)
-            println "Removed expired product: ${product.name} with barcode: ${product.barCode}"
-            return true
         }
     }
 
